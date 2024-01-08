@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - youtube.com/codingnepal -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">  
+    <title>Typing Speed Test Game</title>
+ 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <style>
+      /* Import Google Font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+body{
+  display: flex;
+  padding: 0 10px;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #00BFFF;
+}
+::selection{
+  color: #fff;
+  background: #17A2B8;
+}
+.wrapper{
+  width: 770px;
+  padding: 35px;
+  background:Indigo ;
+  border-radius: 10px;
+  box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+}
+.wrapper .input-field{
+  opacity: 0;
+  z-index: -999;
+  position: absolute;
+  
+}
+.wrapper .content-box{
+  padding: 13px 20px 0;
+  border-radius: 10px;
+  border: 1px solid #bfbfbf;
+}
+.content-box .typing-text{
+  overflow: hidden;
+  max-height: 256px;
+  color:PaleTurquoise;
+  
+}
+.typing-text::-webkit-scrollbar{
+  width: 0;
+}
+.typing-text p{
+  font-size: 21px;
+  text-align: justify;
+  letter-spacing: 1px;
+  word-break: break-all;
+}
+.typing-text p span{
+  position: relative;
+}
+.typing-text p span.correct{
+  color: #56964f;
+}
+.typing-text p span.incorrect{
+  color: #cb3439;
+  outline: 1px solid #fff;
+  background: #ffc0cb;
+  border-radius: 4px;
+}
+.typing-text p span.active{
+  color: #17A2B8;
+}
+.typing-text p span.active::before{
+  position: absolute;
+  content: "";
+  height: 2px;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  border-radius: 5px;
+  background: #17A2B8;
+  animation: blink 1s ease-in-out infinite;
+}
+@keyframes blink{
+  50%{ 
+    opacity: 1; 
+  }
+}
+.content-box .content{
+  margin-top: 17px;
+  display: flex;
+  padding: 12px 0;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #bfbfbf;
+}
+.content button{
+  outline: none;
+  border: none;
+  width: 105px;
+  color: #fff;
+  padding: 8px 0;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  background: #17A2B8;
+  transition: transform 0.3s ease;
+}
+.content button:active{
+  transform: scale(0.97);
+}
+.content .result-details{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: calc(100% - 140px);
+  justify-content: space-between;
+}
+.result-details li{
+  display: flex;
+  height: 20px;
+  list-style: none;
+  position: relative;
+  align-items: center;
+}
+.result-details li:not(:first-child){
+  padding-left: 22px;
+  border-left: 1px solid #bfbfbf;
+}
+.result-details li p{
+  font-size: 19px;
+}
+.result-details li span{
+  display: block;
+  font-size: 20px;
+  margin-left: 10px;
+}
+li span b{
+  font-weight: 500;
+}
+li:not(:first-child) span{
+  font-weight: 500;
+}
+@media (max-width: 745px) {
+  .wrapper{
+    padding: 20px;
+  }
+  .content-box .content{
+    padding: 20px 0;
+  }
+  .content-box .typing-text{
+    max-height: 100%;
+  }
+  .typing-text p{
+    font-size: 19px;
+    text-align: left;
+  }
+  .content button{
+    width: 100%;
+    font-size: 15px;
+    padding: 10px 0;
+    margin-top: 20px;
+  }
+  .content .result-details{
+    width: 100%;
+  }
+  .result-details li:not(:first-child){
+    border-left: 0;
+    padding: 0;
+  }
+  .result-details li p, 
+  .result-details li span{
+    font-size: 17px;
+  }
+}
+@media (max-width: 518px) {
+  .wrapper .content-box{
+    padding: 10px 15px 0;
+  }
+  .typing-text p{
+    font-size: 18px;
+  }
+  .result-details li{
+    margin-bottom: 10px;
+  }
+  .content button{
+    margin-top: 10px;
+  }
+}
+
+.green {
+  color: DeepSkyBlue;
+  border-bottom: 2px solid DeepSkyBlue ;
+}
+
+.red {
+  color: red;
+  border-bottom: 2px solid red;
+}
+
+.blue {
+  color: LightBlue;
+
+}
+
+.time{
+  color: MediumSpringGreen;
+}
+
+.cpm{
+  color: MediumSpringGreen;
+}
+
+.wpm{
+  color: MediumSpringGreen;
+}
+
+.mistake {
+  color: MediumSpringGreen;
+}
+    </style>
+    
+    
+    
+    <div id="need"></div>
+    <div class="wrapper">
+      <input type="text" id="main" class="input-field">
+      <div id="content" class="content-box">
+        <div class="typing-text">
+          <p id="quote"></p>
+        </div>
+        <div class="content">
+          <ul class="result-details">
+            <li class="time">
+              <p>Time Left:</p>
+              <span id="scr">0</span>
+            </li>
+            <li class="mistake">
+              <p>Mistakes:</p>
+              <span id="mistakes">0</span>
+            </li>
+            <li class="wpm">
+              <p>WPM:</p>
+              <span id="wpm">0</span>
+            </li>
+            <li class="cpm">
+                <p>CPM:</p>
+              <span id="cpm">0</span>
+            </li>
+          </ul>
+          <button id="start">Start</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let pass = ["Artificial Intelligence (AI) has revolutionized various industries, utilizing algorithms and data to simulate human intelligence. From predictive analytics to autonomous vehicles, AI's applications are vast and diverse.","Literature serves as a timeless reflection of human experiences, emotions, and ideas. Through storytelling, poetry, drama, and various literary forms, it captures the essence of life, offering insights into diverse cultures, historical periods, and the human condition itself.","Storytelling, the oldest form of literature, transcends generations, conveying morals, beliefs, and societal values. It provides an avenue for escapism, allowing readers to explore new worlds and perspectives.","Poetry, with its rhythmic language and evocative imagery, encapsulates emotions in concise yet powerful ways. Poets craft verses that delve into the depths of human emotions and experiences.","Financial institutions utilize AI algorithms to detect fraudulent activities, personalize customer experiences, and optimize trading strategies. These technologies analyze vast amounts of data, enabling better decision-making and risk management.","Additionally, AI's role in shaping our social interactions is n,oteworthy. Social media platforms leve,rage AI algorithms to curate content, personalize feeds, and target advertisements, influencing user behavior and opinions.","Algorithms like Shor's and Grover's play crucial roles in harnessing quantum superiority. Shor's algorithm efficiently factors large numbers, threatening current encryption methods, while Grover's algorithm speeds up unstructured search problems quadratically.","Sarah walked through the bustling streets, enveloped by the city's vibrant energy. The aroma of freshly brewed coffee wafted from nearby cafes, mingling with the scent of blooming flowers from a street vendor's cart.","In a bustling market, vendors proudly displayed their goods, their voices blending into a symphony of sales pitches. The vibrant colors of fruits, spices, and textiles adorned the stalls, enticing passersby.","Environmental conservation is imperative in combating climate change. Sustainable practices, renewable energy sources, and conservation efforts are vital to preserving our planet for future generations. Every individual's actions collectively impact the environment."]
+
+
+
+
+let h
+let l = 0
+let a = 0
+let c = 0
+//let d = -1
+let ll
+let v = 60
+let pp
+let p = ""
+let wp
+let j =()=>{
+  main.focus()
+}
+
+let g = () => {
+  start.hidden = true
+  let d = Math.floor(Math.random() * 3);
+  for (let i of pass[d]) {
+    let u = document.createElement("span")
+    u.textContent = i
+    u.classList.add("hey")
+    need.append(u)
+    
+  }
+  
+  quote.innerHTML = need.innerHTML
+  need.innerHTML = ""
+  
+  main.value = ""
+  mistakes.textContent = 0
+  start.removeEventListener("click", g)
+  scr.textContent = "60s"
+  v=60
+ 
+  wpm.textContent = 0
+  cpm.textContent = 0
+  p = main.value
+  hi.time()
+  hi.keychecker()
+  
+}
+
+let x = (e) => {
+
+
+
+  let bro = document.querySelectorAll(".hey")
+  let br = Array.from(bro)
+  p = main.value //p=h,p=hf,p=hf,p=hf_,p=hf
+  if(p == ll){//ll=un//ll=h,ll=hf,ll=hf,ll=hf_
+    
+    
+  }
+  else if(p != ll){//ll=un//ll=h
+    if (p.length < l) { //l=un,l=1,l=2,l=3
+      console.log(bro[p.length].className)
+      if (bro[p.length].classList.contains("red") == true) {
+        c--
+        mistakes.textContent = c
+      }
+      a--
+      bro[p.length].classList.add("blue")
+      bro[p.length].classList.remove("green")
+      bro[p.length].classList.remove("red")
+      l=p.length
+    }
+    else if (bro[p.length - 1].textContent == p[p.length - 1]) {
+    
+      a++
+      bro[p.length - 1].classList.add("green")
+      
+      bro[p.length - 1].classList.remove("blue")
+      bro[p.length - 1].classList.remove("red")
+      l = p.length//l=1,l=3
+    }
+    
+    else if (bro[p.length - 1].textContent != p[p.length - 1]) {
+      c++
+      mistakes.textContent = c
+      a++
+      bro[p.length - 1].classList.add("red")
+      bro[p.length - 1].classList.remove("blue")
+      bro[p.length - 1].classList.remove("green")
+      l = p.length
+    }
+  
+    ll = p
+    //let wp = Math.round(((p.length- mistakes.textContent) / 5) / (60 - v) * 60);
+    console.log(v)
+    
+    
+   
+    
+    if(a == bro.length){
+      hi.mistake()
+    }
+    
+  }
+  
+
+}
+
+
+class typing{
+keychecker(){
+  main.addEventListener("input",x)
+}
+start(){
+  
+  start.addEventListener("click",g)
+  content.addEventListener("click",j)
+  
+    
+}
+mistake(){
+  start.hidden = false
+  main.removeEventListener("input", x)
+  
+  quote.removeEventListener("click", j)
+  c = 0
+  l = 0
+  a=0
+  //wp = 0
+  
+  start.textContent = "Next"
+  clearInterval(pp)
+  hi.start()
+}
+
+time(){
+    pp = setInterval((e)=>{
+    console.log(main.value)
+    v--
+    scr.textContent = `${v}s`
+    wp = Math.round((((p.length) / 5) - mistakes.textContent) / (60 - v) * 60);
+    wp = wp < 0 || !wp || wp === Infinity ? 0 : wp
+    
+    wpm.textContent = wp
+    
+    cpm.textContent = p.length - mistakes.textContent;
+    if (v == 0) {
+      hi.mistake()
+    }
+  },1000)
+}
+
+}
+
+let hi = new typing()
+hi.start()
+
+
+    </script>
+    
+  
+  </body>
+</html>
